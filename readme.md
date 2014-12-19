@@ -28,7 +28,7 @@ It is NOT expected that this will be an enterprise ready web application. With t
 2. ASP.NET MVC 5
 3. .NET 4.5
 4. A GitHub account
-5. Implement the features above in a repository forked from https://github.com/jeremyhub/TechnicalInterview_MicroBlog
+5. Implement the features above in a repository forked from https://github.com/Praeses/TechnicalInterview_MicroBlog
 
 **Resources**
 
