@@ -15,7 +15,7 @@ We should be able to pull down the source, hit F5 in Visual Studio and the solut
 5. User should be able to see a feed of blog posts from users they follow.
 6. Implement any additional features as requested by your point of contact.
     + For example, if you are interviewing for a mobile developer position you may be asked to implement your solution using a "mobile-first" approach.
-7. Add any features / functionality that you would want in a feed reader.
+7. Add any features / functionality that you would want in a "micro blog" client.
     + **A pull request must be made prior to the due date.**
 
 **Tip**
