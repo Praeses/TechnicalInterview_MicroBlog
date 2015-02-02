@@ -16,6 +16,7 @@ We should be able to pull down the source, hit F5 in Visual Studio and the solut
 6. Implement any additional features as requested by your point of contact.
     + For example, if you are interviewing for a mobile developer position you may be asked to implement your solution using a "mobile-first" approach.
 7. Add any features / functionality that you would want in a "micro blog" client.
+8. All business logic and data access should happen via calls to an API.
     + **A pull request must be made prior to the due date.**
 
 **Tip**
@@ -25,10 +26,8 @@ It is NOT expected that this will be an enterprise ready web application. With t
 **You Will Need**
 
 1. Visual Studio Community Edition
-2. ASP.NET MVC 5
-3. .NET 4.5
-4. A GitHub account
-5. Implement the features above in a repository forked from https://github.com/Praeses/TechnicalInterview_MicroBlog
+2. A GitHub account
+3. Implement the features above in a repository forked from https://github.com/Praeses/TechnicalInterview_MicroBlog
 
 **Resources**
 
