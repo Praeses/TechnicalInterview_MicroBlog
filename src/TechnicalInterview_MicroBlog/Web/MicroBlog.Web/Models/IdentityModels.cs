@@ -1,6 +1,8 @@
-﻿using System.Data.Entity;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using MicroBlog.Web.Models.Db;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 
@@ -16,6 +18,9 @@ namespace MicroBlog.Web.Models
             // Add custom user claims here
             return userIdentity;
         }
+
+        public virtual List<BlogPost> BlogPosts { get; set; }
+        public virtual List<Follow> Follows { get; set; } 
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -29,5 +34,8 @@ namespace MicroBlog.Web.Models
         {
             return new ApplicationDbContext();
         }
+
+        public DbSet<BlogPost> BlogPosts { get; set; }
+        public DbSet<Follow> Follows { get; set; }
     }
 }
