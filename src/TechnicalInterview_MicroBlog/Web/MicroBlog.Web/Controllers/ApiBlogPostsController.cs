@@ -14,7 +14,7 @@ using Microsoft.AspNet.Identity;
 
 namespace MicroBlog.Web.Controllers
 {
-    public class ApiBlogPostController : ApiController
+    public class ApiBlogPostsController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 

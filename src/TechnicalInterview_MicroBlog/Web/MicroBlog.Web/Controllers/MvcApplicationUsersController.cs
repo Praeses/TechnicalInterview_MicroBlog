@@ -18,6 +18,8 @@ namespace MicroBlog.Web.Controllers
 {
     public class MvcApplicationUsersController : Controller
     {
+        private HttpClient HttpClient = new HttpClient();
+
         // Convert ApplicationUserApiDto to ApplicationUserViewModel
         private static readonly Func<ApplicationUserApiDto, ApplicationUserViewModel> AsApplicationUserViewModel =
             applicationUserApiDto => new ApplicationUserViewModel
@@ -30,22 +32,19 @@ namespace MicroBlog.Web.Controllers
         // GET: MvcApplicationUsers
         public async Task<ActionResult> Index()
         {
-            using (HttpClient client = new HttpClient())
+            var requestUri = UrlHelper.BuildRequestUri("GetFollowableApplicationUsersByApplicationUser",
+                new {applicationUserId = User.Identity.GetUserId()}, Request.Url, Url);
+            var httpResponseMessage = await HttpClient.GetAsync(requestUri);
+
+            string content = await httpResponseMessage.Content.ReadAsStringAsync();
+            if (httpResponseMessage.IsSuccessStatusCode)
             {
-                var requestUri = UrlHelper.BuildRequestUri("GetFollowableApplicationUsersByApplicationUser",
-                    new {applicationUserId = User.Identity.GetUserId()}, Request.Url, Url);
-                var httpResponseMessage = await client.GetAsync(requestUri);
-
-                string content = await httpResponseMessage.Content.ReadAsStringAsync();
-                if (httpResponseMessage.IsSuccessStatusCode)
-                {
-                    var model = JsonConvert.DeserializeObject<IEnumerable<ApplicationUserApiDto>>(content);
-                    return View(model.Select(AsApplicationUserViewModel));
-                }
-
-                // an error occurred => here you could log the content returned by the remote server
-                return Content("An error occurred: " + content);
+                var model = JsonConvert.DeserializeObject<IEnumerable<ApplicationUserApiDto>>(content);
+                return View(model.Select(AsApplicationUserViewModel));
             }
+
+            // an error occurred => here you could log the content returned by the remote server
+            return Content("An error occurred: " + content);
         }
 
         //// GET: MvcApplicationUsers/Details/5
@@ -95,29 +94,26 @@ namespace MicroBlog.Web.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             
-            using (HttpClient client = new HttpClient())
+            var requestUri = UrlHelper.BuildRequestUri("GetFollowableApplicationUserByApplicationUser",
+                new {applicationUserId = User.Identity.GetUserId(), followableApplicationUserId = applicationUserId},
+                Request.Url, Url);
+            var httpResponseMessage = await HttpClient.GetAsync(requestUri);
+
+            string content = await httpResponseMessage.Content.ReadAsStringAsync();
+            if (httpResponseMessage.IsSuccessStatusCode)
             {
-                var requestUri = UrlHelper.BuildRequestUri("GetFollowableApplicationUserByApplicationUser",
-                    new {applicationUserId = User.Identity.GetUserId(), followableApplicationUserId = applicationUserId},
-                    Request.Url, Url);
-                var httpResponseMessage = await client.GetAsync(requestUri);
+                var model = JsonConvert.DeserializeObject<ApplicationUserApiDto>(content);
 
-                string content = await httpResponseMessage.Content.ReadAsStringAsync();
-                if (httpResponseMessage.IsSuccessStatusCode)
+                if (model == null)
                 {
-                    var model = JsonConvert.DeserializeObject<ApplicationUserApiDto>(content);
-
-                    if (model == null)
-                    {
-                        return HttpNotFound();
-                    }
-
-                    return View(AsApplicationUserViewModel(model));
+                    return HttpNotFound();
                 }
 
-                // an error occurred => here you could log the content returned by the remote server
-                return Content("An error occurred: " + content);
+                return View(AsApplicationUserViewModel(model));
             }
+
+            // an error occurred => here you could log the content returned by the remote server
+            return Content("An error occurred: " + content);
         }
 
         // POST: MvcApplicationUsers/Edit/5
@@ -129,42 +125,39 @@ namespace MicroBlog.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                using (HttpClient client = new HttpClient())
+                HttpResponseMessage httpResponseMessage;
+                if (applicationUserViewModel.Follow) // If the current user wants to follow this ApplicationUser, then POST
                 {
-                    HttpResponseMessage httpResponseMessage;
-                    if (applicationUserViewModel.Follow) // If the current user wants to follow this ApplicationUser, then POST
+                    var requestUri = UrlHelper.BuildRequestUri("PostFollowsByApplicationUser",
+                        new {applicationUserId = User.Identity.GetUserId()}, Request.Url, Url);
+
+                    var followApiDto = new FollowApiDto
                     {
-                        var requestUri = UrlHelper.BuildRequestUri("PostFollowsByApplicationUser",
-                            new {applicationUserId = User.Identity.GetUserId()}, Request.Url, Url);
+                        ApplicationUserIdFollowed = applicationUserViewModel.ApplicationUserId
+                    };
 
-                        var followApiDto = new FollowApiDto
-                        {
-                            ApplicationUserIdFollowed = applicationUserViewModel.ApplicationUserId
-                        };
-
-                        httpResponseMessage = await client.PostAsJsonAsync(requestUri, followApiDto);
-                    }
-                    else // If the current user wants to UNfollow this ApplicationUser, then DELETE
-                    {
-                        var requestUri = UrlHelper.BuildRequestUri("DeleteFollowsByApplicationUser",
-                            new
-                            {
-                                applicationUserId = User.Identity.GetUserId(),
-                                applicationUserIdFollowed = applicationUserViewModel.ApplicationUserId
-                            }, Request.Url, Url);
-                        
-                        httpResponseMessage = await client.DeleteAsync(requestUri);
-                    }
-
-                    string content = await httpResponseMessage.Content.ReadAsStringAsync();
-                    if (httpResponseMessage.IsSuccessStatusCode)
-                    {
-                        return RedirectToAction("Index");
-                    }
-
-                    // an error occurred => here you could log the content returned by the remote server
-                    return Content("An error occurred: " + content);
+                    httpResponseMessage = await HttpClient.PostAsJsonAsync(requestUri, followApiDto);
                 }
+                else // If the current user wants to UNfollow this ApplicationUser, then DELETE
+                {
+                    var requestUri = UrlHelper.BuildRequestUri("DeleteFollowsByApplicationUser",
+                        new
+                        {
+                            applicationUserId = User.Identity.GetUserId(),
+                            applicationUserIdFollowed = applicationUserViewModel.ApplicationUserId
+                        }, Request.Url, Url);
+
+                    httpResponseMessage = await HttpClient.DeleteAsync(requestUri);
+                }
+
+                string content = await httpResponseMessage.Content.ReadAsStringAsync();
+                if (httpResponseMessage.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Index");
+                }
+
+                // an error occurred => here you could log the content returned by the remote server
+                return Content("An error occurred: " + content);
             }
 
             return View(applicationUserViewModel);
@@ -196,13 +189,13 @@ namespace MicroBlog.Web.Controllers
         //    return RedirectToAction("Index");
         //}
 
-        //protected override void Dispose(bool disposing)
-        //{
-        //    if (disposing)
-        //    {
-        //        db.Dispose();
-        //    }
-        //    base.Dispose(disposing);
-        //}
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                HttpClient.Dispose();
+            }
+            base.Dispose(disposing);
+        }
     }
 }

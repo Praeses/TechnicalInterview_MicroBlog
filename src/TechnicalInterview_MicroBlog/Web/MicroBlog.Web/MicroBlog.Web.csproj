@@ -169,13 +169,15 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\ApiApplicationUserController.cs" />
+    <Compile Include="Controllers\ApiApplicationUsersController.cs" />
+    <Compile Include="Controllers\ApiFollowedBlogPostController.cs" />
     <Compile Include="Controllers\ApiFollowsController.cs" />
     <Compile Include="Controllers\MvcApplicationUsersController.cs" />
     <Compile Include="Controllers\MvcBlogPostsController.cs" />
-    <Compile Include="Controllers\ApiBlogPostController.cs" />
+    <Compile Include="Controllers\ApiBlogPostsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\MvcFollowedBlogPostsController.cs" />
     <Compile Include="Controllers\UrlHelper.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -184,12 +186,14 @@
     <Compile Include="Models\ApiDto\ApplicationUserApiDto.cs" />
     <Compile Include="Models\ApiDto\BlogPostApiDto.cs" />
     <Compile Include="Models\ApiDto\FollowApiDto.cs" />
+    <Compile Include="Models\ApiDto\FollowedBlogPostApiDto.cs" />
     <Compile Include="Models\Db\BlogPost.cs" />
     <Compile Include="Models\Db\Follow.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ViewModel\ApplicationUserViewModel.cs" />
     <Compile Include="Models\ViewModel\BlogPostViewModel.cs" />
+    <Compile Include="Models\ViewModel\FollowedBlogPostViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -259,6 +263,7 @@
     <Content Include="Views\MvcApplicationUsers\Details.cshtml" />
     <Content Include="Views\MvcApplicationUsers\Edit.cshtml" />
     <Content Include="Views\MvcApplicationUsers\Index.cshtml" />
+    <Content Include="Views\MvcFollowedBlogPosts\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

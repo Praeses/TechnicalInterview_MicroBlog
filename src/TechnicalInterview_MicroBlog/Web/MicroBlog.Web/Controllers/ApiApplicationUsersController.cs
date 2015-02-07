@@ -14,7 +14,7 @@ using MicroBlog.Web.Models.Db;
 
 namespace MicroBlog.Web.Controllers
 {
-    public class ApiApplicationUserController : ApiController
+    public class ApiApplicationUsersController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 

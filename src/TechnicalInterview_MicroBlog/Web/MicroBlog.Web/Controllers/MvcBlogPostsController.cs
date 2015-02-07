@@ -20,6 +20,8 @@ namespace MicroBlog.Web.Controllers
 {
     public class MvcBlogPostsController : Controller
     {
+        private HttpClient HttpClient = new HttpClient();
+
         // Convert BlogPostApiDto to BlogPostViewModel
         private static readonly Func<BlogPostApiDto, BlogPostViewModel> AsBlogPostViewModel =
             blogPostApiDto => new BlogPostViewModel
@@ -43,22 +45,19 @@ namespace MicroBlog.Web.Controllers
         // GET: BlogPosts
         public async Task<ActionResult> Index()
         {
-            using (HttpClient client = new HttpClient())
+            var requestUri = UrlHelper.BuildRequestUri("GetBlogPostsByApplicationUser",
+                new {applicationUserId = User.Identity.GetUserId()}, Request.Url, Url);
+            var httpResponseMessage = await HttpClient.GetAsync(requestUri);
+
+            string content = await httpResponseMessage.Content.ReadAsStringAsync();
+            if (httpResponseMessage.IsSuccessStatusCode)
             {
-                var requestUri = UrlHelper.BuildRequestUri("GetBlogPostsByApplicationUser",
-                    new {applicationUserId = User.Identity.GetUserId()}, Request.Url, Url);
-                var httpResponseMessage = await client.GetAsync(requestUri);
-
-                string content = await httpResponseMessage.Content.ReadAsStringAsync();
-                if (httpResponseMessage.IsSuccessStatusCode)
-                {
-                    var model = JsonConvert.DeserializeObject<IEnumerable<BlogPostApiDto>>(content);
-                    return View(model.Select(AsBlogPostViewModel));
-                }
-
-                // an error occurred => here you could log the content returned by the remote server
-                return Content("An error occurred: " + content);
+                var model = JsonConvert.DeserializeObject<IEnumerable<BlogPostApiDto>>(content);
+                return View(model.Select(AsBlogPostViewModel));
             }
+
+            // an error occurred => here you could log the content returned by the remote server
+            return Content("An error occurred: " + content);
         }
 
         //// GET: MvcBlogPosts/Details/5
@@ -101,21 +100,18 @@ namespace MicroBlog.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                using (HttpClient client = new HttpClient())
+                var requestUri = UrlHelper.BuildRequestUri("PostBlogPostsByApplicationUser",
+                    new {applicationUserId = User.Identity.GetUserId()}, Request.Url, Url);
+                var httpResponseMessage = await HttpClient.PostAsJsonAsync(requestUri, AsBlogPostApiDto(blogPostViewModel));
+
+                string content = await httpResponseMessage.Content.ReadAsStringAsync();
+                if (httpResponseMessage.IsSuccessStatusCode)
                 {
-                    var requestUri = UrlHelper.BuildRequestUri("PostBlogPostsByApplicationUser",
-                        new {applicationUserId = User.Identity.GetUserId()}, Request.Url, Url);
-                    var httpResponseMessage = await client.PostAsJsonAsync(requestUri, AsBlogPostApiDto(blogPostViewModel));
-
-                    string content = await httpResponseMessage.Content.ReadAsStringAsync();
-                    if (httpResponseMessage.IsSuccessStatusCode)
-                    {
-                        return RedirectToAction("Index");
-                    }
-
-                    // an error occurred => here you could log the content returned by the remote server
-                    return Content("An error occurred: " + content);
+                    return RedirectToAction("Index");
                 }
+
+                // an error occurred => here you could log the content returned by the remote server
+                return Content("An error occurred: " + content);
             }
 
             return View(blogPostViewModel);
@@ -177,5 +173,14 @@ namespace MicroBlog.Web.Controllers
         //    await db.SaveChangesAsync();
         //    return RedirectToAction("Index");
         //}
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                HttpClient.Dispose();
+            }
+            base.Dispose(disposing);
+        }
     }
 }
