@@ -32,7 +32,7 @@ namespace MicroBlog.Web.Controllers
         // GET: MvcApplicationUsers
         public async Task<ActionResult> Index()
         {
-            var requestUri = UrlHelper.BuildRequestUri("GetFollowableApplicationUsersByApplicationUser",
+            var requestUri = UrlHelper.BuildRequestUri(RouteNames.GetFollowableApplicationUsersByApplicationUser,
                 new {applicationUserId = User.Identity.GetUserId()}, Request.Url, Url);
             var httpResponseMessage = await HttpClient.GetAsync(requestUri);
 
@@ -93,8 +93,8 @@ namespace MicroBlog.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            
-            var requestUri = UrlHelper.BuildRequestUri("GetFollowableApplicationUserByApplicationUser",
+
+            var requestUri = UrlHelper.BuildRequestUri(RouteNames.GetFollowableApplicationUserByApplicationUser,
                 new {applicationUserId = User.Identity.GetUserId(), followableApplicationUserId = applicationUserId},
                 Request.Url, Url);
             var httpResponseMessage = await HttpClient.GetAsync(requestUri);
@@ -128,7 +128,7 @@ namespace MicroBlog.Web.Controllers
                 HttpResponseMessage httpResponseMessage;
                 if (applicationUserViewModel.Follow) // If the current user wants to follow this ApplicationUser, then POST
                 {
-                    var requestUri = UrlHelper.BuildRequestUri("PostFollowsByApplicationUser",
+                    var requestUri = UrlHelper.BuildRequestUri(RouteNames.PostFollowsByApplicationUser,
                         new {applicationUserId = User.Identity.GetUserId()}, Request.Url, Url);
 
                     var followApiDto = new FollowApiDto
@@ -140,7 +140,7 @@ namespace MicroBlog.Web.Controllers
                 }
                 else // If the current user wants to UNfollow this ApplicationUser, then DELETE
                 {
-                    var requestUri = UrlHelper.BuildRequestUri("DeleteFollowsByApplicationUser",
+                    var requestUri = UrlHelper.BuildRequestUri(RouteNames.DeleteFollowsByApplicationUser,
                         new
                         {
                             applicationUserId = User.Identity.GetUserId(),

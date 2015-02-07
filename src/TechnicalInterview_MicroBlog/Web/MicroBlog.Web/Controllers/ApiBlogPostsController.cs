@@ -49,7 +49,7 @@ namespace MicroBlog.Web.Controllers
         }
 
         // GET: api/BlogPosts/5
-        [Route("api/BlogPosts/{id:int}", Name = "GetBlogPost")]
+        [Route("api/BlogPosts/{id:int}", Name = RouteNames.GetBlogPost)]
         [ResponseType(typeof(BlogPostApiDto))]
         public async Task<IHttpActionResult> GetBlogPost(int id)
         {
@@ -67,7 +67,7 @@ namespace MicroBlog.Web.Controllers
         }
 
         // GET: api/ApplicationUsers/aa95662b-e5c8-4225-a5cf-1c9b65492c01/BlogPosts
-        [Route("api/ApplicationUsers/{ApplicationUserId}/BlogPosts", Name = "GetBlogPostsByApplicationUser")]
+        [Route("api/ApplicationUsers/{ApplicationUserId}/BlogPosts", Name = RouteNames.GetBlogPostsByApplicationUser)]
         public IQueryable<BlogPostApiDto> GetBlogPostsByApplicationUser(string applicationUserId)
         {
             return db.BlogPosts.Include(b => b.ApplicationUser)
@@ -116,7 +116,7 @@ namespace MicroBlog.Web.Controllers
         //}
 
         // POST: api/ApplicationUsers/aa95662b-e5c8-4225-a5cf-1c9b65492c01/BlogPosts
-        [Route("api/ApplicationUsers/{ApplicationUserId}/BlogPosts", Name = "PostBlogPostsByApplicationUser")]
+        [Route("api/ApplicationUsers/{ApplicationUserId}/BlogPosts", Name = RouteNames.PostBlogPostsByApplicationUser)]
         [ResponseType(typeof(BlogPostApiDto))]
         public async Task<IHttpActionResult> PostBlogPostByApplicationUser(string applicationUserId, BlogPostApiDto blogPostApiDto)
         {
@@ -129,7 +129,7 @@ namespace MicroBlog.Web.Controllers
             db.BlogPosts.Add(blogPost);
             await db.SaveChangesAsync();
 
-            return CreatedAtRoute("GetBlogPost", new { id = blogPost.BlogPostId }, AsBlogPostApiDto(blogPost));
+            return CreatedAtRoute(RouteNames.GetBlogPost, new { id = blogPost.BlogPostId }, AsBlogPostApiDto(blogPost));
         }
 
         // DELETE: api/BlogPosts/5

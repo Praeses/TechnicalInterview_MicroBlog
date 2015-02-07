@@ -49,7 +49,7 @@ namespace MicroBlog.Web.Controllers
         }
 
         // GET: api/ApiFollows/5
-        [Route("api/Follows/{id:int}", Name = "GetFollow")]
+        [Route("api/Follows/{id:int}", Name = RouteNames.GetFollow)]
         [ResponseType(typeof(FollowApiDto))]
         public async Task<IHttpActionResult> GetFollow(int id)
         {
@@ -118,7 +118,7 @@ namespace MicroBlog.Web.Controllers
         //}
 
         // POST: api/ApplicationUsers/aa95662b-e5c8-4225-a5cf-1c9b65492c01/Follows
-        [Route("api/ApplicationUsers/{ApplicationUserId}/Follows", Name = "PostFollowsByApplicationUser")]
+        [Route("api/ApplicationUsers/{ApplicationUserId}/Follows", Name = RouteNames.PostFollowsByApplicationUser)]
         [ResponseType(typeof(FollowApiDto))]
         public async Task<IHttpActionResult> PostFollowsByApplicationUser(string applicationUserId, FollowApiDto followApiDto)
         {
@@ -131,11 +131,11 @@ namespace MicroBlog.Web.Controllers
             db.Follows.Add(follow);
             await db.SaveChangesAsync();
 
-            return CreatedAtRoute("GetFollow", new { id = follow.Id }, AsFollowApiDto(follow));
+            return CreatedAtRoute(RouteNames.GetFollow, new { id = follow.Id }, AsFollowApiDto(follow));
         }
 
         // DELETE: api/ApplicationUsers/aa95662b-e5c8-4225-a5cf-1c9b65492c01/Follows/b2628677-dcd9-4416-b133-24d3f9637a18
-        [Route("api/ApplicationUsers/{ApplicationUserId}/Follows/{ApplicationUserIdFollowed}", Name = "DeleteFollowsByApplicationUser")]
+        [Route("api/ApplicationUsers/{ApplicationUserId}/Follows/{ApplicationUserIdFollowed}", Name = RouteNames.DeleteFollowsByApplicationUser)]
         [ResponseType(typeof(FollowApiDto))]
         public async Task<IHttpActionResult> DeleteFollowsByApplicationUser(string applicationUserId, string applicationUserIdFollowed)
         {

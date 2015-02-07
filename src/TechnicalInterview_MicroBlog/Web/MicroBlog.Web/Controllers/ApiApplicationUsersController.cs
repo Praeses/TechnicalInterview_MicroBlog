@@ -27,14 +27,14 @@ namespace MicroBlog.Web.Controllers
             };
 
         // GET: api/ApplicationUsers
-        [Route("api/ApplicationUsers", Name = "GetApplicationUsers")]
+        [Route("api/ApplicationUsers", Name = RouteNames.GetApplicationUsers)]
         public IQueryable<ApplicationUserApiDto> GetApplicationUsers()
         {
             return db.Users.Select(AsApplicationUserApiDto);
         }
 
         // GET: api/ApplicationUsers/aa95662b-e5c8-4225-a5cf-1c9b65492c01/FollowableApplicationUsers/b2628677-dcd9-4416-b133-24d3f9637a18
-        [Route("api/ApplicationUsers/{ApplicationUserId}/FollowableApplicationUsers/{FollowableApplicationUserId}", Name = "GetFollowableApplicationUserByApplicationUser")]
+        [Route("api/ApplicationUsers/{ApplicationUserId}/FollowableApplicationUsers/{FollowableApplicationUserId}", Name = RouteNames.GetFollowableApplicationUserByApplicationUser)]
         [ResponseType(typeof(ApplicationUserApiDto))]
         public async Task<IHttpActionResult> GetFollowableApplicationUserByApplicationUser(string applicationUserId, string followableApplicationUserId)
         {
@@ -58,7 +58,7 @@ namespace MicroBlog.Web.Controllers
         }
 
         // GET: api/ApplicationUsers/aa95662b-e5c8-4225-a5cf-1c9b65492c01/FollowableApplicationUsers
-        [Route("api/ApplicationUsers/{ApplicationUserId}/FollowableApplicationUsers", Name = "GetFollowableApplicationUsersByApplicationUser")]
+        [Route("api/ApplicationUsers/{ApplicationUserId}/FollowableApplicationUsers", Name = RouteNames.GetFollowableApplicationUsersByApplicationUser)]
         public IEnumerable<ApplicationUserApiDto> GetFollowableApplicationUsersByApplicationUser(string applicationUserId)
         {
             // Get all ApplicationUsers except the current user (you can't follow yourself)
