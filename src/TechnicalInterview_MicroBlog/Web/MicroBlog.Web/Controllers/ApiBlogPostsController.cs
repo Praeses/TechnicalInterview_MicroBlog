@@ -76,44 +76,45 @@ namespace MicroBlog.Web.Controllers
         }
 
         // PUT: api/BlogPosts/5
-        //[ResponseType(typeof(void))]
-        //public async Task<IHttpActionResult> PutBlogPost(int id, BlogPost blogPost)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
+        [Route("api/BlogPosts/{id:int}", Name = RouteNames.PutBlogPost)]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PutBlogPost(int id, BlogPostApiDto blogPostApiDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-        //    if (id != blogPost.BlogPostId)
-        //    {
-        //        return BadRequest();
-        //    }
+            if (id != blogPostApiDto.BlogPostId)
+            {
+                return BadRequest();
+            }
 
-        //    db.Entry(blogPost).State = EntityState.Modified;
+            db.Entry(AsBlogPost(blogPostApiDto)).State = EntityState.Modified;
 
-        //    try
-        //    {
-        //        await db.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!BlogPostExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
+            try
+            {
+                await db.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!BlogPostExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
 
-        //    return StatusCode(HttpStatusCode.NoContent);
-        //}
+            return StatusCode(HttpStatusCode.NoContent);
+        }
 
-        //private bool BlogPostExists(int id)
-        //{
-        //    return db.BlogPosts.Count(e => e.BlogPostId == id) > 0;
-        //}
+        private bool BlogPostExists(int id)
+        {
+            return db.BlogPosts.Count(e => e.BlogPostId == id) > 0;
+        }
 
         // POST: api/ApplicationUsers/aa95662b-e5c8-4225-a5cf-1c9b65492c01/BlogPosts
         [Route("api/ApplicationUsers/{ApplicationUserId}/BlogPosts", Name = RouteNames.PostBlogPostsByApplicationUser)]
@@ -133,20 +134,21 @@ namespace MicroBlog.Web.Controllers
         }
 
         // DELETE: api/BlogPosts/5
-        //[ResponseType(typeof(BlogPost))]
-        //public async Task<IHttpActionResult> DeleteBlogPost(int id)
-        //{
-        //    BlogPost blogPost = await db.BlogPosts.FindAsync(id);
-        //    if (blogPost == null)
-        //    {
-        //        return NotFound();
-        //    }
+        [Route("api/BlogPosts/{id:int}", Name = RouteNames.DeleteBlogPost)]
+        [ResponseType(typeof(BlogPost))]
+        public async Task<IHttpActionResult> DeleteBlogPost(int id)
+        {
+            BlogPost blogPost = await db.BlogPosts.FindAsync(id);
+            if (blogPost == null)
+            {
+                return NotFound();
+            }
 
-        //    db.BlogPosts.Remove(blogPost);
-        //    await db.SaveChangesAsync();
+            db.BlogPosts.Remove(blogPost);
+            await db.SaveChangesAsync();
 
-        //    return Ok(blogPost);
-        //}
+            return Ok(blogPost);
+        }
 
         protected override void Dispose(bool disposing)
         {

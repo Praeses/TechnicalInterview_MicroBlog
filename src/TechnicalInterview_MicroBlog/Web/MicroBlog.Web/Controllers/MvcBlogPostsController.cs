@@ -45,7 +45,7 @@ namespace MicroBlog.Web.Controllers
         // GET: BlogPosts
         public async Task<ActionResult> Index()
         {
-            var requestUri = UrlHelper.BuildRequestUri("GetBlogPostsByApplicationUser",
+            var requestUri = UrlHelper.BuildRequestUri(RouteNames.GetBlogPostsByApplicationUser,
                 new {applicationUserId = User.Identity.GetUserId()}, Request.Url, Url);
             var httpResponseMessage = await HttpClient.GetAsync(requestUri);
 
@@ -100,7 +100,7 @@ namespace MicroBlog.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var requestUri = UrlHelper.BuildRequestUri("PostBlogPostsByApplicationUser",
+                var requestUri = UrlHelper.BuildRequestUri(RouteNames.PostBlogPostsByApplicationUser,
                     new {applicationUserId = User.Identity.GetUserId()}, Request.Url, Url);
                 var httpResponseMessage = await HttpClient.PostAsJsonAsync(requestUri, AsBlogPostApiDto(blogPostViewModel));
 
@@ -117,62 +117,105 @@ namespace MicroBlog.Web.Controllers
             return View(blogPostViewModel);
         }
 
-        //// GET: MvcBlogPosts/Edit/5
-        //public async Task<ActionResult> Edit(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    BlogPost blogPost = await db.BlogPosts.FindAsync(id);
-        //    if (blogPost == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(blogPost);
-        //}
+        // GET: MvcBlogPosts/Edit/5
+        public async Task<ActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
 
-        //// POST: MvcBlogPosts/Edit/5
-        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<ActionResult> Edit([Bind(Include = "BlogPostId,Title,Content")] BlogPost blogPost)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        db.Entry(blogPost).State = EntityState.Modified;
-        //        await db.SaveChangesAsync();
-        //        return RedirectToAction("Index");
-        //    }
-        //    return View(blogPost);
-        //}
+            var requestUri = UrlHelper.BuildRequestUri(RouteNames.GetBlogPost, new {id}, Request.Url, Url);
+            var httpResponseMessage = await HttpClient.GetAsync(requestUri);
 
-        //// GET: MvcBlogPosts/Delete/5
-        //public async Task<ActionResult> Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    BlogPost blogPost = await db.BlogPosts.FindAsync(id);
-        //    if (blogPost == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(blogPost);
-        //}
+            string content = await httpResponseMessage.Content.ReadAsStringAsync();
+            if (httpResponseMessage.IsSuccessStatusCode)
+            {
+                var model = JsonConvert.DeserializeObject<BlogPostApiDto>(content);
 
-        //// POST: MvcBlogPosts/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<ActionResult> DeleteConfirmed(int id)
-        //{
-        //    BlogPost blogPost = await db.BlogPosts.FindAsync(id);
-        //    db.BlogPosts.Remove(blogPost);
-        //    await db.SaveChangesAsync();
-        //    return RedirectToAction("Index");
-        //}
+                if (model == null)
+                {
+                    return HttpNotFound();
+                }
+
+                return View(AsBlogPostViewModel(model));
+            }
+
+            // an error occurred => here you could log the content returned by the remote server
+            return Content("An error occurred: " + content);
+        }
+
+        // POST: MvcBlogPosts/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit([Bind(Include = "BlogPostId,Title,Content,ApplicationUserId")] BlogPostViewModel blogPostViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var requestUri = UrlHelper.BuildRequestUri(RouteNames.PutBlogPost,
+                    new { id = blogPostViewModel.BlogPostId }, Request.Url, Url);
+                var httpResponseMessage = await HttpClient.PutAsJsonAsync(requestUri, AsBlogPostApiDto(blogPostViewModel));
+
+                string content = await httpResponseMessage.Content.ReadAsStringAsync();
+                if (httpResponseMessage.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Index");
+                }
+
+                // an error occurred => here you could log the content returned by the remote server
+                return Content("An error occurred: " + content);
+            }
+
+            return View(blogPostViewModel);
+        }
+
+        // GET: MvcBlogPosts/Delete/5
+        public async Task<ActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var requestUri = UrlHelper.BuildRequestUri(RouteNames.GetBlogPost, new { id }, Request.Url, Url);
+            var httpResponseMessage = await HttpClient.GetAsync(requestUri);
+
+            string content = await httpResponseMessage.Content.ReadAsStringAsync();
+            if (httpResponseMessage.IsSuccessStatusCode)
+            {
+                var model = JsonConvert.DeserializeObject<BlogPostApiDto>(content);
+
+                if (model == null)
+                {
+                    return HttpNotFound();
+                }
+
+                return View(AsBlogPostViewModel(model));
+            }
+
+            // an error occurred => here you could log the content returned by the remote server
+            return Content("An error occurred: " + content);
+        }
+
+        // POST: MvcBlogPosts/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeleteConfirmed(int id)
+        {
+            var requestUri = UrlHelper.BuildRequestUri(RouteNames.DeleteBlogPost, new { id }, Request.Url, Url);
+            var httpResponseMessage = await HttpClient.DeleteAsync(requestUri);
+
+            string content = await httpResponseMessage.Content.ReadAsStringAsync();
+            if (httpResponseMessage.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
+            }
+
+            // an error occurred => here you could log the content returned by the remote server
+            return Content("An error occurred: " + content);
+        }
 
         protected override void Dispose(bool disposing)
         {

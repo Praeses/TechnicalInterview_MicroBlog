@@ -30,7 +30,7 @@ namespace MicroBlog.Web.Controllers
         // GET: MvcFollowedBlogPosts
         public async Task<ActionResult> Index()
         {
-            var requestUri = UrlHelper.BuildRequestUri("GetFollowedBlogPostsByApplicationUser",
+            var requestUri = UrlHelper.BuildRequestUri(RouteNames.GetFollowedBlogPostsByApplicationUser,
                 new {applicationUserId = User.Identity.GetUserId()}, Request.Url, Url);
             var httpResponseMessage = await HttpClient.GetAsync(requestUri);
 
