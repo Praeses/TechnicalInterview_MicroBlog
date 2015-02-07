@@ -1,13 +1,10 @@
 ﻿@model IEnumerable<MicroBlog.Web.Models.ViewModel.FollowedBlogPostViewModel>
 @{
-    ViewBag.Title = "My Followed Blog Posts";
+    ViewBag.Title = "Followed Blog Post Feed";
 }
 
 <h2>@ViewBag.Title.</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
@@ -19,7 +16,6 @@
         <th>
             @Html.DisplayNameFor(model => model.UserName)
         </th>
-        @*<th></th>*@
     </tr>
 
     @foreach (var item in Model)
@@ -34,11 +30,6 @@
             <td>
                 @Html.DisplayFor(modelItem => item.UserName)
             </td>
-            @*<td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.BlogPostId }) |
-                @Html.ActionLink("Details", "Details", new { id = item.BlogPostId }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.BlogPostId })
-            </td>*@
         </tr>
     }
 

@@ -24,7 +24,7 @@ namespace MicroBlog.Web.Controllers
                 UserName = followedBlogPostApiDto.UserName,
                 BlogPostId = followedBlogPostApiDto.BlogPostId,
                 Title = followedBlogPostApiDto.Title,
-                Content = followedBlogPostApiDto.Title
+                Content = followedBlogPostApiDto.Content
             };
 
         // GET: MvcFollowedBlogPosts

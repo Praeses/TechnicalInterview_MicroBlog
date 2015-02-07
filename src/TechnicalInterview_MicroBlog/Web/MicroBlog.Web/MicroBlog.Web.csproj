@@ -200,6 +200,7 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Images\MikeRowe.jpg" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -255,12 +256,8 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\MvcBlogPosts\Create.cshtml" />
     <Content Include="Views\MvcBlogPosts\Delete.cshtml" />
-    <Content Include="Views\MvcBlogPosts\Details.cshtml" />
     <Content Include="Views\MvcBlogPosts\Edit.cshtml" />
     <Content Include="Views\MvcBlogPosts\Index.cshtml" />
-    <Content Include="Views\MvcApplicationUsers\Create.cshtml" />
-    <Content Include="Views\MvcApplicationUsers\Delete.cshtml" />
-    <Content Include="Views\MvcApplicationUsers\Details.cshtml" />
     <Content Include="Views\MvcApplicationUsers\Edit.cshtml" />
     <Content Include="Views\MvcApplicationUsers\Index.cshtml" />
     <Content Include="Views\MvcFollowedBlogPosts\Index.cshtml" />

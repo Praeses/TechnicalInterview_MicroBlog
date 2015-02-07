@@ -10,10 +10,10 @@
             @Html.ActionLink("My Blog Posts", "Index", "MvcBlogPosts")
         </li>
         <li>
-            @Html.ActionLink("Application Users", "Index", "MvcApplicationUsers")
+            @Html.ActionLink("Follow Other Bloggers", "Index", "MvcApplicationUsers")
         </li>
         <li>
-            @Html.ActionLink("My Followed Blog Posts", "Index", "MvcFollowedBlogPosts")
+            @Html.ActionLink("Followed Blog Post Feed", "Index", "MvcFollowedBlogPosts")
         </li>
         <li>
             @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
