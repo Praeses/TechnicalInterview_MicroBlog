@@ -5,7 +5,7 @@ namespace MicroBlog.Web.Models.Db
 {
     public class BlogPost
     {
-        public int BlogPostId { get; set; }
+        public int Id { get; set; }
         public string Title { get; set; }
         [Required]
         public string Content { get; set; }

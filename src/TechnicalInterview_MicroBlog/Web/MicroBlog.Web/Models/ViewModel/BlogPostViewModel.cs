@@ -5,7 +5,7 @@ namespace MicroBlog.Web.Models.ViewModel
 {
     public class BlogPostViewModel
     {
-        public int BlogPostId { get; set; }
+        public int Id { get; set; }
         [Required]
         [RegularExpression(@"^.*Mike Rowe.*$", ErrorMessage = "The title of your blog post must contain \"Mike Rowe\". Don't try to change the subject!")]
         public string Title { get; set; }

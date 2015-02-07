@@ -20,11 +20,12 @@ namespace MicroBlog.Web.Controllers
                 join fu in db.Users on f.ApplicationUserIdFollowed equals fu.Id
                 join b in db.BlogPosts on fu.Id equals b.ApplicationUserId
                 where u.Id.Equals(applicationUserId)
+                orderby b.Id descending
                 select new FollowedBlogPostApiDto
                 {
                     ApplicationUserId = fu.Id,
                     UserName = fu.UserName,
-                    BlogPostId = b.BlogPostId,
+                    BlogPostId = b.Id,
                     Title = b.Title,
                     Content = b.Content
                 };

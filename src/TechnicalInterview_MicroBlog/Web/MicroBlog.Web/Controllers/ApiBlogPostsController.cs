@@ -26,7 +26,7 @@ namespace MicroBlog.Web.Controllers
         private static readonly Expression<Func<BlogPost, BlogPostApiDto>> AsBlogPostApiDtoExpression =
             blogPost => new BlogPostApiDto
             {
-                BlogPostId = blogPost.BlogPostId,
+                Id = blogPost.Id,
                 Title = blogPost.Title,
                 Content = blogPost.Content,
                 ApplicationUserId = blogPost.ApplicationUserId
@@ -35,7 +35,7 @@ namespace MicroBlog.Web.Controllers
         // Convert BlogPostApiDto to BlogPost
         private static readonly Func<BlogPostApiDto, BlogPost> AsBlogPost = blogPostApiDto => new BlogPost
         {
-            BlogPostId = blogPostApiDto.BlogPostId,
+            Id = blogPostApiDto.Id,
             Title = blogPostApiDto.Title,
             Content = blogPostApiDto.Content,
             ApplicationUserId = blogPostApiDto.ApplicationUserId
@@ -54,7 +54,7 @@ namespace MicroBlog.Web.Controllers
         public async Task<IHttpActionResult> GetBlogPost(int id)
         {
             BlogPostApiDto blogPostApiDto = await db.BlogPosts
-                .Where(b => b.BlogPostId == id)
+                .Where(b => b.Id == id)
                 .Select(AsBlogPostApiDtoExpression)
                 .FirstOrDefaultAsync();
 
@@ -85,7 +85,7 @@ namespace MicroBlog.Web.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (id != blogPostApiDto.BlogPostId)
+            if (id != blogPostApiDto.Id)
             {
                 return BadRequest();
             }
@@ -113,7 +113,7 @@ namespace MicroBlog.Web.Controllers
 
         private bool BlogPostExists(int id)
         {
-            return db.BlogPosts.Count(e => e.BlogPostId == id) > 0;
+            return db.BlogPosts.Count(b => b.Id == id) > 0;
         }
 
         // POST: api/ApplicationUsers/aa95662b-e5c8-4225-a5cf-1c9b65492c01/BlogPosts
@@ -130,7 +130,7 @@ namespace MicroBlog.Web.Controllers
             db.BlogPosts.Add(blogPost);
             await db.SaveChangesAsync();
 
-            return CreatedAtRoute(RouteNames.GetBlogPost, new { id = blogPost.BlogPostId }, AsBlogPostApiDto(blogPost));
+            return CreatedAtRoute(RouteNames.GetBlogPost, new { blogPost.Id }, AsBlogPostApiDto(blogPost));
         }
 
         // DELETE: api/BlogPosts/5

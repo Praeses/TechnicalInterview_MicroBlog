@@ -26,7 +26,7 @@ namespace MicroBlog.Web.Controllers
         private static readonly Func<BlogPostApiDto, BlogPostViewModel> AsBlogPostViewModel =
             blogPostApiDto => new BlogPostViewModel
             {
-                BlogPostId = blogPostApiDto.BlogPostId,
+                Id = blogPostApiDto.Id,
                 Title = blogPostApiDto.Title,
                 Content = blogPostApiDto.Content,
                 ApplicationUserId = blogPostApiDto.ApplicationUserId
@@ -36,7 +36,7 @@ namespace MicroBlog.Web.Controllers
         private static readonly Func<BlogPostViewModel, BlogPostApiDto> AsBlogPostApiDto =
             blogPostViewModel => new BlogPostApiDto
             {
-                BlogPostId = blogPostViewModel.BlogPostId,
+                Id = blogPostViewModel.Id,
                 Title = blogPostViewModel.Title,
                 Content = blogPostViewModel.Content,
                 ApplicationUserId = blogPostViewModel.ApplicationUserId
@@ -96,7 +96,7 @@ namespace MicroBlog.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "BlogPostId,Title,Content")] BlogPostViewModel blogPostViewModel)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Title,Content")] BlogPostViewModel blogPostViewModel)
         {
             if (ModelState.IsValid)
             {
@@ -150,12 +150,12 @@ namespace MicroBlog.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "BlogPostId,Title,Content,ApplicationUserId")] BlogPostViewModel blogPostViewModel)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,Title,Content,ApplicationUserId")] BlogPostViewModel blogPostViewModel)
         {
             if (ModelState.IsValid)
             {
                 var requestUri = UrlHelper.BuildRequestUri(RouteNames.PutBlogPost,
-                    new { id = blogPostViewModel.BlogPostId }, Request.Url, Url);
+                    new { id = blogPostViewModel.Id }, Request.Url, Url);
                 var httpResponseMessage = await HttpClient.PutAsJsonAsync(requestUri, AsBlogPostApiDto(blogPostViewModel));
 
                 string content = await httpResponseMessage.Content.ReadAsStringAsync();

@@ -6,31 +6,14 @@
 <h2>@ViewBag.Title.</h2>
 
 <table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Title)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Content)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UserName)
-        </th>
-    </tr>
-
     @foreach (var item in Model)
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Content)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserName)
+                <h2>@Html.DisplayFor(modelItem => item.Title)</h2>
+                <h4>@Html.DisplayFor(modelItem => item.Content)</h4>
+                <p class="text-muted">Authored by: @Html.DisplayFor(modelItem => item.UserName)</p>
             </td>
         </tr>
     }
-
 </table>
