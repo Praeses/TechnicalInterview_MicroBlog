@@ -4,7 +4,6 @@
     {
         internal const string DeleteBlogPost = "DeleteBlogPost";
         internal const string DeleteFollowsByApplicationUser = "DeleteFollowsByApplicationUser";
-        internal const string GetApplicationUsers = "GetApplicationUsers";
         internal const string GetBlogPost = "GetBlogPost";
         internal const string GetBlogPostsByApplicationUser = "GetBlogPostsByApplicationUser";
         internal const string GetFollow = "GetFollow";
