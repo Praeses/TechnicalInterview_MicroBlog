@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Net;
-using System.Web;
-using System.Web.Mvc;
-using MicroBlog.Web.Models;
-using MicroBlog.Web.Models.ApiDto;
-using MicroBlog.Web.Models.Db;
+﻿using MicroBlog.Web.Models.ApiDto;
 using MicroBlog.Web.Models.ViewModel;
 using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace MicroBlog.Web.Controllers
 {
@@ -59,31 +53,6 @@ namespace MicroBlog.Web.Controllers
             // an error occurred => here you could log the content returned by the remote server
             return Content("An error occurred: " + content);
         }
-
-        //// GET: MvcBlogPosts/Details/5
-        //public async Task<ActionResult> Details(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-
-        //    using (HttpClient client = new HttpClient())
-        //    {
-        //        var requestUri = Url.RouteUrl("DefaultApi", new { httproute = "", controller = "ApiBlogPosts", id }, Request.Url.Scheme);
-        //        var httpResponseMessage = await client.GetAsync(requestUri);
-
-        //        string content = await httpResponseMessage.Content.ReadAsStringAsync();
-        //        if (httpResponseMessage.IsSuccessStatusCode)
-        //        {
-        //            var model = JsonConvert.DeserializeObject<BlogPostApiDto>(content);
-        //            return View(AsBlogPostViewModel(model));
-        //        }
-
-        //        // an error occurred => here you could log the content returned by the remote server
-        //        return Content("An error occurred: " + content);
-        //    }
-        //}
 
         // GET: MvcBlogPosts/Create
         public ActionResult Create()

@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Web.UI.WebControls;
 
 namespace MicroBlog.Web.Models.ViewModel
 {

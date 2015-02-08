@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using MicroBlog.Web.Models;
+using MicroBlog.Web.Models.ApiDto;
+using MicroBlog.Web.Models.Db;
+using System;
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
-using MicroBlog.Web.Models;
-using MicroBlog.Web.Models.ApiDto;
-using MicroBlog.Web.Models.Db;
 
 namespace MicroBlog.Web.Controllers
 {
@@ -66,57 +61,6 @@ namespace MicroBlog.Web.Controllers
             return Ok(followApiDto);
         }
 
-        //// PUT: api/ApiFollows/5
-        //[ResponseType(typeof(void))]
-        //public async Task<IHttpActionResult> PutFollow(int id, Follow follow)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    if (id != follow.Id)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    db.Entry(follow).State = EntityState.Modified;
-
-        //    try
-        //    {
-        //        await db.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!FollowExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-
-        //    return StatusCode(HttpStatusCode.NoContent);
-        //}
-
-        //// POST: api/ApiFollows
-        //[ResponseType(typeof(FollowApiDto))]
-        //public async Task<IHttpActionResult> PostFollow(FollowApiDto followApiDto)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    var follow = db.Follows.Add(AsFollow(followApiDto));
-        //    await db.SaveChangesAsync();
-
-        //    // create correct location uri
-        //    return CreatedAtRoute("DefaultApi", new { id = follow.Id }, follow);
-        //}
-
         // POST: api/ApplicationUsers/aa95662b-e5c8-4225-a5cf-1c9b65492c01/Follows
         [Route("api/ApplicationUsers/{ApplicationUserId}/Follows", Name = RouteNames.PostFollowsByApplicationUser)]
         [ResponseType(typeof(FollowApiDto))]
@@ -164,10 +108,5 @@ namespace MicroBlog.Web.Controllers
             }
             base.Dispose(disposing);
         }
-
-        //private bool FollowExists(int id)
-        //{
-        //    return db.Follows.Count(e => e.Id == id) > 0;
-        //}
     }
 }

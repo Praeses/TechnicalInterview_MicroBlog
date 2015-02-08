@@ -1,4 +1,7 @@
-﻿using System;
+﻿using MicroBlog.Web.Models;
+using MicroBlog.Web.Models.ApiDto;
+using MicroBlog.Web.Models.Db;
+using System;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
@@ -7,10 +10,6 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
-using MicroBlog.Web.Models;
-using MicroBlog.Web.Models.ApiDto;
-using MicroBlog.Web.Models.Db;
-using Microsoft.AspNet.Identity;
 
 namespace MicroBlog.Web.Controllers
 {
