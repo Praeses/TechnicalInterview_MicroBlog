@@ -61,7 +61,8 @@ namespace MicroBlog.Web.Controllers
         [Route("api/ApplicationUsers/{ApplicationUserId}/FollowableApplicationUsers", Name = RouteNames.GetFollowableApplicationUsersByApplicationUser)]
         public IEnumerable<ApplicationUserApiDto> GetFollowableApplicationUsersByApplicationUser(string applicationUserId)
         {
-            // Get all ApplicationUsers except the current user (you can't follow yourself)
+            // Get all ApplicationUsers except the current user (the data model won't prevent you
+            // from following yourself, but logically let's prevent that from happening here)
             var followableApplicationUsersByApplicationUser = db.Users
                 .Where(b => !b.Id.Equals(applicationUserId))
                 .Select(AsApplicationUserApiDto).ToList();

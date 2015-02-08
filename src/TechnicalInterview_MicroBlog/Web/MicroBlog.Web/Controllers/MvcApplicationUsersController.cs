@@ -126,6 +126,7 @@ namespace MicroBlog.Web.Controllers
             if (ModelState.IsValid)
             {
                 HttpResponseMessage httpResponseMessage;
+                // Instead of doing this if/else post/delete technique, I could have implemented this by PUT'ing back an updated Followable ApplicationUser
                 if (applicationUserViewModel.Follow) // If the current user wants to follow this ApplicationUser, then POST
                 {
                     var requestUri = UrlHelper.BuildRequestUri(RouteNames.PostFollowsByApplicationUser,

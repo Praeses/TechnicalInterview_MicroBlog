@@ -14,20 +14,22 @@ namespace MicroBlog.Web.Controllers
             Name = "GetFollowedBlogPostsByApplicationUser")]
         public IQueryable<FollowedBlogPostApiDto> GetFollowedBlogPostsByApplicationUser(string applicationUserId)
         {
+            // I initially had the relatively meaningful range variable names u, f, fu, and b
+            // ...but I'll use these instead just for fun...
             return
-                from u in db.Users
-                join f in db.Follows on u.Id equals f.ApplicationUserId
-                join fu in db.Users on f.ApplicationUserIdFollowed equals fu.Id
-                join b in db.BlogPosts on fu.Id equals b.ApplicationUserId
-                where u.Id.Equals(applicationUserId)
-                orderby b.Id descending
+                from MR in db.Users
+                join IO in db.Follows on MR.Id equals IO.ApplicationUserId
+                join KW in db.Users on IO.ApplicationUserIdFollowed equals KW.Id
+                join EE in db.BlogPosts on KW.Id equals EE.ApplicationUserId
+                where MR.Id.Equals(applicationUserId)
+                orderby EE.Id descending
                 select new FollowedBlogPostApiDto
                 {
-                    ApplicationUserId = fu.Id,
-                    UserName = fu.UserName,
-                    BlogPostId = b.Id,
-                    Title = b.Title,
-                    Content = b.Content
+                    ApplicationUserId = KW.Id,
+                    UserName = KW.UserName,
+                    BlogPostId = EE.Id,
+                    Title = EE.Title,
+                    Content = EE.Content
                 };
         }
 

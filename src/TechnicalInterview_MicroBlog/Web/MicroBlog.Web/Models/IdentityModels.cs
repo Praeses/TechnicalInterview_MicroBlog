@@ -19,8 +19,9 @@ namespace MicroBlog.Web.Models
             return userIdentity;
         }
 
-        public virtual List<BlogPost> BlogPosts { get; set; }
-        public virtual List<Follow> Follows { get; set; } 
+        public virtual ICollection<BlogPost> BlogPosts { get; set; }
+        public virtual ICollection<Follow> Follows { get; set; }
+        public virtual ICollection<Follow> FollowedBy { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
